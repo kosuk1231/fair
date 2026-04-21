@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>직능별 정책제안서 — 종사자 임금 및 처우개선</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --teal: #008a90;
+      --teal-dark: #006b70;
+      --teal-mid: #00a8af;
+      --teal-light: #e0f5f6;
+      --teal-xlight: #f0fafa;
+      --teal-border: #b2e4e6;
+    }
+
+    body {
+      font-family: 'Pretendard', 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif;
+      background: #f4f4f4;
+      color: #111;
+      min-height: 100vh;
+    }
+
+    .sw {
+      max-width: 720px;
+      margin: 0 auto;
+      padding: 2rem 1rem 4rem;
+    }
+
+    /* 헤더 */
+    .survey-header {
+      background: var(--teal);
+      color: #fff;
+      border-radius: 4px 4px 0 0;
+      padding: 1.75rem 2rem;
+    }
+    .survey-header h1 {
+      font-size: 22px;
+      font-weight: 600;
+      line-height: 1.3;
+      letter-spacing: -0.02em;
+      white-space: nowrap;
+    }
+    .survey-header p {
+      font-size: 13px;
+      margin-top: 8px;
+      opacity: 0.85;
+      line-height: 1.65;
+    }
+    .header-bar {
+      height: 5px;
+      background: var(--teal-dark);
+      border-radius: 0 0 4px 4px;
+      margin-bottom: 24px;
+    }
+
+    /* 섹션 배너 */
+    .section-banner {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin: 28px 0 0;
+    }
+    .section-banner .snum {
+      width: 28px;
+      height: 28px;
+      background: var(--teal);
+      color: #fff;
+      border-radius: 3px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+      font-weight: 600;
+      flex-shrink: 0;
+    }
+    .section-banner .stitle {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--teal-dark);
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+    .section-banner .stitle .opt {
+      font-size: 11px;
+      font-weight: 400;
+      color: #aaa;
+      text-transform: none;
+      letter-spacing: 0;
+    }
+    .section-banner .sline {
+      flex: 1;
+      height: 1px;
+      background: var(--teal-border);
+    }
+
+    /* 브릭 카드 */
+    .brick {
+      background: #fff;
+      border: 1px solid #ddd;
+      border-left: 4px solid var(--teal);
+      border-radius: 3px;
+      padding: 1.1rem 1.25rem;
+      margin-top: 8px;
+    }
+    .brick.sub {
+      border-left-color: var(--teal-border);
+    }
+
+    .blabel {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.07em;
+      text-transform: uppercase;
+      color: var(--teal);
+      margin-bottom: 6px;
+    }
+    .bq {
+      font-size: 14px;
+      font-weight: 600;
+      color: #111;
+      margin-bottom: 10px;
+      line-height: 1.5;
+    }
+    .req { color: #c0392b; }
+
+    /* 3단 그리드 */
+    .tri-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 8px;
+    }
+    @media (max-width: 540px) {
+      .tri-row { grid-template-columns: 1fr; }
+      .survey-header h1 { font-size: 17px; white-space: normal; }
+    }
+    .finput-label {
+      font-size: 11px;
+      color: #888;
+      margin-bottom: 4px;
+    }
+
+    /* 입력 요소 */
+    input[type=text],
+    input[type=email],
+    textarea {
+      width: 100%;
+      font-size: 13px;
+      font-family: inherit;
+      color: #111;
+      background: #fafafa;
+      border: 1px solid #d0d0d0;
+      border-radius: 3px;
+      padding: 9px 11px;
+      outline: none;
+      transition: border-color 0.15s, background 0.15s;
+      line-height: 1.5;
+    }
+    input[type=text]:focus,
+    input[type=email]:focus,
+    textarea:focus {
+      border-color: var(--teal);
+      background: #fff;
+      box-shadow: 0 0 0 3px rgba(0, 138, 144, 0.1);
+    }
+    textarea {
+      resize: vertical;
+      min-height: 100px;
+      line-height: 1.65;
+    }
+    .ccount {
+      font-size: 11px;
+      color: #aaa;
+      text-align: right;
+      margin-top: 3px;
+    }
+
+    /* 유효성 에러 */
+    .err {
+      font-size: 11px;
+      color: #c0392b;
+      margin-top: 4px;
+      display: none;
+    }
+    .ferr input,
+    .ferr textarea {
+      border-color: #c0392b;
+      background: #fff8f8;
+    }
+    .ferr .err { display: block; }
+
+    /* 제출 버튼 */
+    .submit-btn {
+      width: 100%;
+      padding: 14px;
+      background: var(--teal);
+      color: #fff;
+      border: none;
+      border-radius: 3px;
+      font-size: 15px;
+      font-weight: 600;
+      font-family: inherit;
+      cursor: pointer;
+      letter-spacing: 0.04em;
+      transition: background 0.15s;
+      margin-top: 28px;
+    }
+    .submit-btn:hover { background: var(--teal-dark); }
+    .submit-btn:disabled { opacity: 0.45; cursor: not-allowed; }
+
+    /* 완료 화면 */
+    .success {
+      display: none;
+      text-align: center;
+      padding: 3.5rem 2rem;
+      border: 1px solid var(--teal-border);
+      border-top: 4px solid var(--teal);
+      border-radius: 3px;
+      background: #fff;
+      margin-top: 8px;
+    }
+    .success .ck {
+      width: 56px;
+      height: 56px;
+      background: var(--teal);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 1.25rem;
+    }
+    .success h2 {
+      font-size: 18px;
+      font-weight: 600;
+      color: var(--teal-dark);
+      margin-bottom: 10px;
+    }
+    .success p {
+      font-size: 14px;
+      color: #666;
+      line-height: 1.8;
+    }
+
+    .gap8 { margin-top: 8px; }
+  </style>
+</head>
+<body>
+<div class="sw">
+
+  <div class="survey-header">
+    <h1>직능별 정책제안서 — 종사자 임금 및 처우개선</h1>
+    <p>기관별 의견을 수렴하여 직능(또는 기관)별 2개의 정책과제를 제출합니다.</p>
+  </div>
+  <div class="header-bar"></div>
+
+  <div id="form-area">
+
+    <!-- I. 기본 정보 -->
+    <div class="section-banner" style="margin-top:4px">
+      <div class="snum">I</div>
+      <div class="stitle">기본 정보</div>
+      <div class="sline"></div>
+    </div>
+
+    <div class="brick">
+      <div class="blabel">소속 기관</div>
+      <div class="bq">기관명 <span class="req">*</span></div>
+      <div id="f-org">
+        <input type="text" id="org" placeholder="예: ○○시설">
+        <div class="err">기관명을 입력해 주세요</div>
+      </div>
+    </div>
+
+    <div class="brick gap8">
+      <div class="blabel">제출자</div>
+      <div class="bq">성명 및 연락처 <span class="req">*</span></div>
+      <div class="tri-row">
+        <div>
+          <div class="finput-label">성명</div>
+          <div id="f-name">
+            <input type="text" id="uname" placeholder="홍길동">
+            <div class="err">성명을 입력해 주세요</div>
+          </div>
+        </div>
+        <div>
+          <div class="finput-label">이메일</div>
+          <div id="f-email">
+            <input type="email" id="email" placeholder="example@email.com">
+            <div class="err">이메일을 입력해 주세요</div>
+          </div>
+        </div>
+        <div>
+          <div class="finput-label">핸드폰번호</div>
+          <div id="f-phone">
+            <input type="text" id="phone" placeholder="010-0000-0000">
+            <div class="err">연락처를 입력해 주세요</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- II. 정책과제 1 -->
+    <div class="section-banner" style="margin-top:28px">
+      <div class="snum">II</div>
+      <div class="stitle">정책과제 1</div>
+      <div class="sline"></div>
+    </div>
+
+    <div class="brick">
+      <div class="blabel">제목</div>
+      <div class="bq">요구사항이 드러나도록 작성 <span class="req">*</span></div>
+      <div id="f-title1">
+        <input type="text" id="title1" placeholder="예: 경력인정 범위 확대">
+        <div class="err">정책과제 제목을 입력해 주세요</div>
+      </div>
+    </div>
+
+    <div class="brick gap8">
+      <div class="blabel">필요성</div>
+      <div class="bq">이 정책과제가 필요한 이유 <span class="req">*</span></div>
+      <div id="f-need1">
+        <textarea id="need1" placeholder="예: 법정·비법정시설 간 이동 시에도 경력이 단절되지 않도록 동일·유사 업무에 대한 경력인정 기준 확대가 필요함"></textarea>
+        <div class="ccount"><span id="nc1">0</span>/500자</div>
+        <div class="err">필요성을 입력해 주세요</div>
+      </div>
+    </div>
+
+    <div class="brick gap8">
+      <div class="blabel">현황 및 문제점</div>
+      <div class="bq">현재 상황과 문제점 <span class="req">*</span></div>
+      <div id="f-issue1">
+        <textarea id="issue1" placeholder="데이터, 사례 등을 포함하여 구체적으로 서술해 주세요."></textarea>
+        <div class="ccount"><span id="ic1">0</span>/500자</div>
+        <div class="err">현황 및 문제점을 입력해 주세요</div>
+      </div>
+    </div>
+
+    <div class="brick gap8">
+      <div class="blabel">정책 대안</div>
+      <div class="bq">구체적인 정책 대안 <span class="req">*</span></div>
+      <div id="f-alt1">
+        <textarea id="alt1" placeholder="예산 요구 시 산출내역 및 총 예산을 구체적으로 명시해 주세요."></textarea>
+        <div class="ccount"><span id="ac1">0</span>/500자</div>
+        <div class="err">정책 대안을 입력해 주세요</div>
+      </div>
+    </div>
+
+    <!-- III. 정책과제 2 -->
+    <div class="section-banner" style="margin-top:28px">
+      <div class="snum" style="background:#4db8bc">III</div>
+      <div class="stitle">정책과제 2 <span class="opt">(선택)</span></div>
+      <div class="sline"></div>
+    </div>
+
+    <div class="brick sub">
+      <div class="blabel">제목</div>
+      <div class="bq">요구사항이 드러나도록 작성</div>
+      <input type="text" id="title2" placeholder="두 번째 정책과제 제목">
+    </div>
+
+    <div class="brick sub gap8">
+      <div class="blabel">필요성</div>
+      <textarea id="need2" placeholder="두 번째 정책과제 필요성"></textarea>
+      <div class="ccount"><span id="nc2">0</span>/500자</div>
+    </div>
+
+    <div class="brick sub gap8">
+      <div class="blabel">현황 및 문제점</div>
+      <textarea id="issue2" placeholder="두 번째 정책과제 현황 및 문제점"></textarea>
+      <div class="ccount"><span id="ic2">0</span>/500자</div>
+    </div>
+
+    <div class="brick sub gap8">
+      <div class="blabel">정책 대안</div>
+      <textarea id="alt2" placeholder="두 번째 정책과제 정책 대안 (예산 요구 시 산출내역 포함)"></textarea>
+      <div class="ccount"><span id="ac2">0</span>/500자</div>
+    </div>
+
+    <button class="submit-btn" id="submitBtn" onclick="submitForm()">제출하기 →</button>
+  </div>
+
+  <!-- 완료 화면 -->
+  <div class="success" id="success">
+    <div class="ck">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+        <polyline points="4,12 10,18 20,6" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </div>
+    <h2>제출이 완료되었습니다</h2>
+    <p>소중한 의견 감사합니다.<br>수집된 의견은 정책과제 수립에 반영됩니다.</p>
+  </div>
+
+</div>
+
+<script>
+  // ✅ Apps Script 배포 후 아래 URL을 교체하세요
+  const APPS_SCRIPT_URL = 'YOUR_APPS_SCRIPT_WEB_APP_URL';
+
+  // 글자 수 카운터
+  const taMap = { need1:'nc1', issue1:'ic1', alt1:'ac1', need2:'nc2', issue2:'ic2', alt2:'ac2' };
+  document.querySelectorAll('textarea').forEach(ta => {
+    ta.addEventListener('input', function () {
+      if (taMap[this.id]) document.getElementById(taMap[this.id]).textContent = this.value.length;
+    });
+  });
+
+  // 유효성 검사
+  function validate() {
+    let ok = true;
+    [
+      { f: 'f-org',    v: () => document.getElementById('org').value.trim() },
+      { f: 'f-name',   v: () => document.getElementById('uname').value.trim() },
+      { f: 'f-email',  v: () => document.getElementById('email').value.trim() },
+      { f: 'f-phone',  v: () => document.getElementById('phone').value.trim() },
+      { f: 'f-title1', v: () => document.getElementById('title1').value.trim() },
+      { f: 'f-need1',  v: () => document.getElementById('need1').value.trim() },
+      { f: 'f-issue1', v: () => document.getElementById('issue1').value.trim() },
+      { f: 'f-alt1',   v: () => document.getElementById('alt1').value.trim() },
+    ].forEach(c => {
+      const el = document.getElementById(c.f);
+      if (!el) return;
+      if (!c.v()) { el.classList.add('ferr'); ok = false; }
+      else el.classList.remove('ferr');
+    });
+    return ok;
+  }
+
+  // 제출
+  async function submitForm() {
+    if (!validate()) {
+      document.querySelector('.ferr')?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      return;
+    }
+    const btn = document.getElementById('submitBtn');
+    btn.disabled = true;
+    btn.textContent = '제출 중...';
+
+    const payload = {
+      timestamp: new Date().toLocaleString('ko-KR'),
+      org:    document.getElementById('org').value.trim(),
+      name:   document.getElementById('uname').value.trim(),
+      email:  document.getElementById('email').value.trim(),
+      phone:  document.getElementById('phone').value.trim(),
+      title1: document.getElementById('title1').value.trim(),
+      need1:  document.getElementById('need1').value.trim(),
+      issue1: document.getElementById('issue1').value.trim(),
+      alt1:   document.getElementById('alt1').value.trim(),
+      title2: document.getElementById('title2').value.trim(),
+      need2:  document.getElementById('need2').value.trim(),
+      issue2: document.getElementById('issue2').value.trim(),
+      alt2:   document.getElementById('alt2').value.trim(),
+    };
+
+    try {
+      await fetch(APPS_SCRIPT_URL, {
+        method: 'POST',
+        mode: 'no-cors',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      });
+      document.getElementById('form-area').style.display = 'none';
+      document.getElementById('success').style.display = 'block';
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    } catch (e) {
+      btn.disabled = false;
+      btn.textContent = '제출하기 →';
+      alert('제출 중 오류가 발생했습니다. 잠시 후 다시 시도해 주세요.');
+    }
+  }
+</script>
+</body>
+</html>
